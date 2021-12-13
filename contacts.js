@@ -16,7 +16,7 @@ function getContactById(contactId) {
   fs.readFile(pathName)
     .then((data) => JSON.parse(data))
     .then((data) => data.find((item) => Number(item.id) === Number(contactId)))
-    .then((data) => console.log(data))
+    .then((data) => console.table(data))
     .catch((err) => console.log(err.message));
 }
 
@@ -26,7 +26,8 @@ function removeContact(contactId) {
     .then((data) => JSON.parse(data))
     .then((data) =>
       data.filter((item) => Number(item.id) !== Number(contactId))
-    )
+  )
+    .then(data => console.table(data))
     .then((data) => fs.writeFile(pathName, JSON.stringify(data)))
     .catch((err) => console.log(err.message));
 }
@@ -36,6 +37,7 @@ async function addContact(name, email, phone) {
   const parsedData = JSON.parse(data);
   const newContact = { id: uniquid(),name, email, phone };
   parsedData.push(newContact);
+  console.table(parsedData)
   fs.writeFile(pathName, JSON.stringify(parsedData));
 }
 
